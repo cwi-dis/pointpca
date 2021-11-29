@@ -26,8 +26,8 @@
 % This script provides a simple example of a main for the computation of 
 %   PointPCA. The two point clouds under comparison are loaded, and the 
 %   configuration of the metric is set, which denote the required arguments
-%   for its execution. In the output, a table with quality scores of 
-%   PointPCA and every statistical feature, are returned.
+%   for its execution. In the output, a table with 33 quality scores of 
+%   PointPCA (1) and every statistical feature (32), are returned.
 
 
 clear all;

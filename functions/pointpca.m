@@ -40,19 +40,18 @@ function [Q] = pointpca(A, B, cfg)
 %   INPUTS
 %       A: Point cloud A as a pointCloud struct
 %       B: Point cloud B as a pointCloud struct
-%       cfg: Metric configuration using a custom struct with fields:
+%       cfg: Metric configuration as a custom struct with fields:
 %           ratio   - Ratio multiplied by the maximum length of reference 
 %                     bounding box to obtain a radius. The latter is used 
 %                     in r-search to compute geometric descriptors
 %           knn     - Number of nearest neighbors used in k-nn to compute  
 %                     statistical features
-%           weights - Weights applied on individual quality predictions to
-%                     provide a final quality score, with options: 
+%           weights - Weights used for a final quality score, with options: 
 %                     {'learned', 'equal'}
 %
 %   OUTPUTS
-%       Q: Table with 33 quality scores indicating the predictions obtained 
-%          from PointPCA (1) and every statistical feature (32)
+%       Q: Table with 33 quality scores of PointPCA (1) and every 
+%          statistical feature (32)
 
 
 if nargin < 2
@@ -91,13 +90,18 @@ else
 end
 
 
+% Console output
+fprintf('Execution of PointPCA\n');
+
+
 %% Fusion
 [geoA, colA] = fuse_points(A);
 [geoB, colB] = fuse_points(B);
 
 
 %% Correspondence
-[cAB, cBA] = compute_correspondences(geoA, geoB);
+[cBA] = compute_correspondence(geoA, geoB);
+[cAB] = compute_correspondence(geoB, geoA);
 
 
 %% Descriptors
@@ -128,8 +132,8 @@ tID = setdiff(gtID, gID);
 
 
 %% Comparison
-[rAB] = compare_statistical_features(phiA, phiB, cAB);
-[rBA] = compare_statistical_features(phiB, phiA, cBA);
+[rBA] = compare_statistical_features(phiA, phiB, cBA);
+[rAB] = compare_statistical_features(phiB, phiA, cAB);
 
 % Pooling across points
 sAB = nanmean(rAB);
@@ -141,7 +145,7 @@ s = max(sAB, sBA);
 
 %% Quality score
 if strcmp(cfg.weights, 'learned')
-    mat = load('../mat/weights_learned.mat');
+    mat = load('./mat/weights_learned.mat');
     w = mat.w;
     q = sum(w.*s);
 elseif strcmp(cfg.weights, 'equal')
@@ -152,5 +156,3 @@ end
     
 Q = array2table([q, s]);
 Q.Properties.VariableNames = ['PointPCA', get_statistical_feature_names];
-
-

@@ -44,6 +44,9 @@ function [phiP] = compute_statistical_features(geoP, dP, k)
 %       phiP: Statistical features of point cloud P, with size Mx2C
 
     
+% Console output
+fprintf('#### Computing statistical fearures\n');
+
 % Support region for computation of statistical features
 [id, ~] = knnsearch(geoP, geoP, 'K', k);
 

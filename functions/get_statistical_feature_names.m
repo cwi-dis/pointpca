@@ -31,7 +31,7 @@ function [phiNames] = get_statistical_feature_names
 %
 % 
 %   OUTPUTS
-%       [phiNames] = get_statistical_feature_names
+%       phiNames: Names of statistical features in a readable form
 
 
 dgNames = {'eigval1', 'eigval2', 'eigval3', 'sum_eigvals', 'linearity', 'planarity', 'sphericity', 'anisotropy', 'omnivariance', 'eigenentropy',  'surface_variation', 'roughness', 'parallelity_x', 'parallelity_y', 'parallelity_z'};

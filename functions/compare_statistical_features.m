@@ -1,4 +1,4 @@
-function [rXY] = compare_statistical_features(phiX, phiY, cXY)
+function [rYX] = compare_statistical_features(phiX, phiY, cYX)
 % Copyright (c) 2021 Centrum Wiskunde & Informatica (CWI), The Netherlands
 %
 %     This program is free software: you can redistribute it and/or modify
@@ -27,24 +27,27 @@ function [rXY] = compare_statistical_features(phiX, phiY, cXY)
 % Compare statistical features, given a correspondence function.
 %   
 %
-%   [rXY] = compare_statistical_features(phiX, phiY, cXY)
+%   [rYX] = compare_statistical_features(phiX, phiY, cYX)
 %
 % 
 %   INPUTS
 %       phiX: Statistical features of point cloud X, with size KxF
 %       phiY: Statistical features of point cloud Y, with size LxF
-%       cXY: Correspondences between point clouds X and Y after setting Y 
+%       cYX: Correspondences between point clouds X and Y after setting X 
 %            as the reference, with size Lx1
 %
 %   OUTPUTS
-%       rXY: Relative difference between statistical features, with size 
+%       rYX: Relative difference between statistical features, with size 
 %            LxF
 
 
+% Console output
+fprintf('##### Comparing statistical fearures\n');
+
 % Comparison of corresponding statistical features
-rXY = nan(size(phiX));
-for i = 1:size(phiX,2)
-    rXY(:,i) = abs(phiY(cXY,i) - phiX(:,i))./(max([abs(phiY(cXY,i)), abs(phiX(:,i))], [], 2) + eps(1));
+rYX = nan(size(phiY));
+for i = 1:size(phiY,2)
+    rYX(:,i) = abs(phiX(cYX,i) - phiY(:,i))./(max([abs(phiX(cYX,i)), abs(phiY(:,i))], [], 2) + eps(1));
 end
 
-rXY = real(rXY);
+rYX = real(rYX);

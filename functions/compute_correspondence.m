@@ -1,4 +1,4 @@
-function [cXY, cYX] = compute_correspondences(geoX, geoY)
+function [cYX] = compute_correspondence(geoX, geoY)
 % Copyright (c) 2021 Centrum Wiskunde & Informatica (CWI), The Netherlands
 %
 %     This program is free software: you can redistribute it and/or modify
@@ -24,12 +24,11 @@ function [cXY, cYX] = compute_correspondences(geoX, geoY)
 %   Transactions on Multimedia
 %
 %
-% Compute correspondences between two point clouds. The correspondences
-%   rely only on geometry, and both matching sets are obtained by setting 
-%   both point clouds as reference.
+% Compute correspondence between two point clouds, using geometry-only
+%   information and based on nearest neighbors.
 %
 % 
-%   [cXY, cYX] = compute_correspondences(geoX, geoY)
+%   [cYX] = compute_correspondence(geoX, geoY)
 %
 % 
 %   INPUTS
@@ -37,14 +36,12 @@ function [cXY, cYX] = compute_correspondences(geoX, geoY)
 %       geoY: Geometry of point cloud Y, with size Lx3
 %
 %   OUTPUTS
-%       cXY: Correspondences between point clouds X and Y after setting Y 
-%            as the reference, with size Lx1
 %       cYX: Correspondences between point clouds X and Y after setting X 
-%            as the reference, with size Kx1
+%            as the reference, with size Lx1
 
 
-% Loop over X and find nearest neighbor in Y (set Y as the reference)
-[cXY, ~] = knnsearch(geoY, geoX);
+% Console output
+fprintf('## Computing correspondence\n');
 
 % Loop over Y and find nearest neighbor in X (set X as the reference)
 [cYX, ~] = knnsearch(geoX, geoY);

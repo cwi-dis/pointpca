@@ -38,6 +38,9 @@ function [dtP] = compute_textural_descriptor(colP)
 %       dtP: Textural descriptor of point cloud P, with size Mx1
 
 
+% Console output
+fprintf('### Computing textural descriptor\n');
+
 % Conversion to double
 r = double(colP(:,1));
 g = double(colP(:,2));

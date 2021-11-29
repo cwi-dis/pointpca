@@ -38,13 +38,13 @@ function [dgP] = compute_geometric_descriptors(geoP, r)
 %   OUTPUTS
 %       dgP: Geometric descriptors of point cloud P, with size Mx15
 
+
 if r <= 0
     error('The radius should be a positive real number.'); 
 end
-if size(geoP,2) < 3
-    error('The coordinates should be in 3D to compute geometric descriptors.');
-end
 
+% Console output
+fprintf('### Computing geometric descriptors\n');
 
 % Initialization
 dgP = nan(size(geoP,1), 15);
