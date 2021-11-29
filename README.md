@@ -1,22 +1,22 @@
 
 # PointPCA
 
-PointPCA is a full-reference point cloud objective quality metric that relies on statistical features computed from geometric and textural descriptors. The point clouds first pass through point fusion, and correspondences are computed based on the fused geometry. Geometric and textural descriptors are computed for both point clouds, before estimating corresponding statistical features. The latter are compared providing individual quality predictions. A final quality score is obtained as their linear combination using a selected set of weights.
+PointPCA is a full-reference point cloud objective quality metric that relies on statistical features computed from geometric and textural descriptors. The point clouds first pass through point fusion, and correspondences are computed based on the fused geometry. Geometric and textural descriptors are extracted from both point clouds, before estimating corresponding statistical features. The latter are compared to provide quality predictions. A final quality score is obtained as a weighted linear combination of the individual quality predictions.
 
-The provided material consists of functions that are called during the execution of the metric, a mat file including the proposed learned weights, and an example of a main.
+The provided material consists of functions for the execution of the metric, a mat file with the proposed learned weights, and an example of a main. The structure of the code closely follows the metric's architecture, as defined in [1].
 
 To compute PointPCA:
 
-  `[q] = pointpca(A, B, cfg)`
+  `[Q] = pointpca(A, B, cfg)`
 
-with `A` and `B` being two point clouds under comparison and `cfg` a struct that determines the configuration of the metric.
+with `A` and `B` being two point clouds under comparison and `cfg` a custom struct that determines the configuration of the metric. In the output, a table `Q` with quality scores of PointPCA and every statistical feature, is returned. An illustrative example of usage is provided in main.
 
 For more details, the reader can refer to [1].
 
 
 ### Conditions of use
 
-If you wish to use any of the provided scripts in your research, we kindly ask you to cite [1].
+If you wish to use any of the provided material in your research, we kindly ask you to cite [1].
 
 
 ### References

@@ -1,4 +1,4 @@
-function [geo, col] = fuse_points(P)
+function [geoP, colP] = fuse_points(P)
 % Copyright (c) 2021 Centrum Wiskunde & Informatica (CWI), The Netherlands
 %
 %     This program is free software: you can redistribute it and/or modify
@@ -28,45 +28,50 @@ function [geo, col] = fuse_points(P)
 %   and corresponding color values are averaged.
 %
 % 
-%   [geo, col] = fuse_points(P)
+%   [geoP, colP] = fuse_points(P)
 %
 % 
 %   INPUTS
-%       P: Point cloud
+%       P: Point cloud P as a pointCloud struct, with size Nx3 for the
+%          Location and Color (optional) fields
 %
 %   OUTPUTS
-%       geo: Geometry of point cloud with unique coordinates
-%       col: Corresponding color of point cloud
+%       geoP: Geometry of point cloud P after discarding duplicated 
+%             coordinates, with size Mx3 and M <= N
+%       colP: Color of point cloud P after averaging across duplicated 
+%             coordinates, with size Mx3 and M <= N (optional)
 
 
 % Unique point coordinates and corresponding indexes
-[geo, ind_geo] = unique(double(P.Location), 'rows');
+[geoP, ind_geo] = unique(double(P.Location), 'rows');
 
-if (size(P.Location,1) ~= size(geo,1)) 
+if (size(P.Location,1) ~= size(geoP,1)) 
     warning('Duplicated coordinates are found.');
+    % If the point cloud contains color
     if ~isempty(P.Color)
         warning('Color averaging is applied.');
         % Sorting of coordinates and corresponding color values
-        [geo_sorted, ind_geo] = sortrows(double(P.Location));
-        col_sorted = double(P.Color(ind_geo, :));
+        [geoP_sorted, ind_geo] = sortrows(double(P.Location));
+        colP_sorted = double(P.Color(ind_geo, :));
         
         % Indexes that correspond to different coordinates
-        d = diff(geo_sorted,1,1);
+        d = diff(geoP_sorted,1,1);
         sd = sum(abs(d),2) > 0;
-        id = [1; find(sd == 1)+1; size(geo_sorted,1)+1];
+        id = [1; find(sd == 1)+1; size(geoP_sorted,1)+1];
         
         % Averaging color values that correspond to identical coordinates
-        col = zeros(size(id,1)-1,3);
+        colP = zeros(size(id,1)-1,3);
         for j = 1:size(id,1)-1
-            col(j,:) = round(mean(col_sorted(id(j):id(j+1)-1, :), 1));
+            colP(j,:) = round(mean(colP_sorted(id(j):id(j+1)-1, :), 1));
         end
         id(end) = [];
         
         % Unique point coordinates
-        geo = geo_sorted(id,:);
+        geoP = geoP_sorted(id,:);
     end
 else
+    % If the point cloud contains color
     if ~isempty(P.Color)
-        col = double(P.Color(ind_geo, :));
+        colP = double(P.Color(ind_geo, :));
     end
 end

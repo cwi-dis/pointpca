@@ -1,4 +1,4 @@
-function [q] = pointpca(A, B, cfg)
+function [Q] = pointpca(A, B, cfg)
 % Copyright (c) 2021 Centrum Wiskunde & Informatica (CWI), The Netherlands
 %
 %     This program is free software: you can redistribute it and/or modify
@@ -26,32 +26,33 @@ function [q] = pointpca(A, B, cfg)
 %
 % PointPCA is a full-reference point cloud objective quality metric that 
 %   relies on statistical features computed from geometric and textural 
-%   descriptors. The point clouds first pass through point fusion, and
+%   descriptors. The point clouds first pass through point fusion, and 
 %   correspondences are computed based on the fused geometry. Geometric and
-%   textural descriptors are computed for both point clouds, before 
+%   textural descriptors are extracted from both point clouds, before 
 %   estimating corresponding statistical features. The latter are compared 
-%   providing individual quality predictions. A final quality score is 
-%   obtained as their linear combination using a selected set of weights.
-%
+%   to provide quality predictions. A final quality score is obtained as a 
+%   weighted linear combination of the individual quality predictions.
 % 
-%   [q] = pointpca(A, B, cfg)
+% 
+%   [Q] = pointpca(A, B, cfg)
 %
 % 
 %   INPUTS
-%       A: Point cloud A
-%       B: Point cloud B
-%       cfg: Metric configuration
+%       A: Point cloud A as a pointCloud struct
+%       B: Point cloud B as a pointCloud struct
+%       cfg: Metric configuration using a custom struct with fields:
 %           ratio   - Ratio multiplied by the maximum length of reference 
-%                     bounding box to obtain the radius. The latter is used 
+%                     bounding box to obtain a radius. The latter is used 
 %                     in r-search to compute geometric descriptors
 %           knn     - Number of nearest neighbors used in k-nn to compute  
 %                     statistical features
-%           weights - Weights to compute a quality score from individual 
-%                     predictors, with options: {'learned', 'equal'}
+%           weights - Weights applied on individual quality predictions to
+%                     provide a final quality score, with options: 
+%                     {'learned', 'equal'}
 %
 %   OUTPUTS
-%       q: Table with quality scores obtained from PointPCA and every  
-%          statistical feature
+%       Q: Table with 33 quality scores indicating the predictions obtained 
+%          from PointPCA (1) and every statistical feature (32)
 
 
 if nargin < 2
@@ -76,7 +77,7 @@ else
             cfg.knn = 25;
         else
             if cfg.knn <= 0 
-                error('The k should be a natural number.');
+                error('The k should be a positive integer number.');
             end
         end
         if ~isfield(cfg, 'weights')
@@ -96,7 +97,7 @@ end
 
 
 %% Correspondence
-[cBA, cAB] = compute_correspondences(geoA, geoB);
+[cAB, cBA] = compute_correspondences(geoA, geoB);
 
 
 %% Descriptors
@@ -120,6 +121,11 @@ dB = [dgB, dtB];
 [phiA] = compute_statistical_features(geoA, dA, cfg.knn);
 [phiB] = compute_statistical_features(geoB, dB, cfg.knn);
 
+% Indexes of geometric and textural statistical features
+gtID = 1:size(phiA,2);
+gID = [1:size(dgA,2), size(phiA,2)/2+(1:size(dgA,2))];
+tID = setdiff(gtID, gID);
+
 
 %% Comparison
 [rAB] = compare_statistical_features(phiA, phiB, cAB);
@@ -135,13 +141,16 @@ s = max(sAB, sBA);
 
 %% Quality score
 if strcmp(cfg.weights, 'learned')
-    mat = load('weights_learned.mat');
+    mat = load('../mat/weights_learned.mat');
     w = mat.w;
+    q = sum(w.*s);
 elseif strcmp(cfg.weights, 'equal')
-    w = 1/length(s) .* ones(1,length(s));
+    qg = mean(s(gID));
+    qt = mean(s(tID));
+    q = 0.5*qg + 0.5*qt;
 end
-
-q = array2table([sum(w.*s), s]);
-q.Properties.VariableNames = ['PointPCA', get_statistical_feature_names];
+    
+Q = array2table([q, s]);
+Q.Properties.VariableNames = ['PointPCA', get_statistical_feature_names];
 
 

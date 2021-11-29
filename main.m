@@ -24,10 +24,10 @@
 %
 %
 % This script provides a simple example of a main for the computation of 
-%   PointPCA. In particular, a reference and a distorted point cloud are 
-%   loaded, and the configurations of the metric are set, which denote
-%   the required arguments for the execution of the metric. In the output,
-%   quality scores of PointPCA and every statistical feature are returned.
+%   PointPCA. The two point clouds under comparison are loaded, and the 
+%   configuration of the metric is set, which denote the required arguments
+%   for its execution. In the output, a table with quality scores of 
+%   PointPCA and every statistical feature, are returned.
 
 
 clear all;
@@ -36,13 +36,8 @@ clc;
 
 
 %% Configuration
-% Ratio multiplied by the maximum length of reference bounding box to 
-% obtain the radius used in r-search to compute geometric descriptors
 cfg.ratio = 0.01;  
-% Number of nearest neighbors used in k-nn to compute statistical features
 cfg.knn = 25;
-% Weights to compute a quality score from individual predictors, with 
-% options: {'learned', 'equal'}
 cfg.weights = 'learned';
 
 
@@ -52,5 +47,5 @@ B = pcread('pointcloudB.ply');
 
 
 %% Compute pointpca
-[q] = pointpca(A, B, cfg);
+[Q] = pointpca(A, B, cfg);
 

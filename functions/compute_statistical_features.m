@@ -1,5 +1,4 @@
-function [phi] = compute_statistical_features(geo, d, k)
-% function [phi] = compute_statistical_features(geo, dsc, k)
+function [phiP] = compute_statistical_features(geoP, dP, k)
 % Copyright (c) 2021 Centrum Wiskunde & Informatica (CWI), The Netherlands
 %
 %     This program is free software: you can redistribute it and/or modify
@@ -32,31 +31,31 @@ function [phi] = compute_statistical_features(geo, d, k)
 %   both following the order of the input descriptors.
 % 
 % 
-%   [phi] = compute_statistical_features(geo, d, k)
+%   [phiP] = compute_statistical_features(geoP, dP, k)
 %
 % 
 %   INPUTS
-%       geo: Geometry of point cloud
-%       d: Descriptor values of point cloud
+%       geoP: Geometry of point cloud P, with size Mx3
+%       dP: Descriptors of point cloud P, with size MxC
 %       k: Number of nearest neighbors used in k-nn for the computation of
 %          statistical features
 %
 %   OUTPUTS
-%       phi: Statistical features of point cloud
+%       phiP: Statistical features of point cloud P, with size Mx2C
 
-
+    
 % Support region for computation of statistical features
-[id, ~] = knnsearch(geo, geo, 'K', k);
+[id, ~] = knnsearch(geoP, geoP, 'K', k);
 
 % Computation of point statistical features, per descriptor
-mu = nan(size(id,1), size(d,2));
-sigma = nan(size(id,1), size(d,2));
-for i = 1:size(d,2)
-    d_ = d(:,i);
+mu = nan(size(id,1), size(dP,2));
+sigma = nan(size(id,1), size(dP,2));
+for i = 1:size(dP,2)
+    d_ = dP(:,i);
     
     mu(:,i) = nanmean(d_(id),2);
     sigma(:,i) = nanstd(d_(id),[],2);
 end
 
-phi = [mu, sigma];
-phi = real(phi);
+phiP = [mu, sigma];
+phiP = real(phiP);

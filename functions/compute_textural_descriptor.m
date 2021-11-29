@@ -1,5 +1,4 @@
-function [dt] = compute_textural_descriptor(col)
-% function [dscTex] = compute_textural_descriptor(col)
+function [dtP] = compute_textural_descriptor(colP)
 % Copyright (c) 2021 Centrum Wiskunde & Informatica (CWI), The Netherlands
 %
 %     This program is free software: you can redistribute it and/or modify
@@ -25,24 +24,24 @@ function [dt] = compute_textural_descriptor(col)
 %   Transactions on Multimedia
 %
 %
-% Compute textural descriptor. The luminance is computed per point from 
-%   corresponding RGB values, using the Recommendation ITU-R BT.709.
+% Compute textural descriptor. This is the luminance, which is computed
+%   from corresponding RGB values using the Recommendation ITU-R BT.709.
 %   
 %
-%   [dt] = compute_textural_descriptor(col)
+%   [dtP] = compute_textural_descriptor(colP)
 %
 % 
 %   INPUTS
-%       col: Color of point cloud
+%       colP: Color of point cloud P in RGB, with size Mx3
 %
 %   OUTPUTS
-%       dt: Textural descriptor of point cloud
+%       dtP: Textural descriptor of point cloud P, with size Mx1
 
 
 % Conversion to double
-r = double(col(:,1));
-g = double(col(:,2));
-b = double(col(:,3));
+r = double(colP(:,1));
+g = double(colP(:,2));
+b = double(colP(:,3));
 
 % Coefficients
 coeff = [ 0.2126,  0.7152,  0.0722;
@@ -50,4 +49,4 @@ coeff = [ 0.2126,  0.7152,  0.0722;
           0.5000, -0.4542, -0.0468];
 
 % Computation of textural descriptor
-dt = coeff(1,1)*r + coeff(1,2)*g + coeff(1,3)*b;
+dtP = coeff(1,1)*r + coeff(1,2)*g + coeff(1,3)*b;

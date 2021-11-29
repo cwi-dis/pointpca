@@ -1,4 +1,4 @@
-function [rYX] = compare_statistical_features(phiY, phiX, cYX)
+function [cXY, cYX] = compute_correspondences(geoX, geoY)
 % Copyright (c) 2021 Centrum Wiskunde & Informatica (CWI), The Netherlands
 %
 %     This program is free software: you can redistribute it and/or modify
@@ -24,25 +24,27 @@ function [rYX] = compare_statistical_features(phiY, phiX, cYX)
 %   Transactions on Multimedia
 %
 %
-% Compare statistical features, given a correspondence function.
-%   
+% Compute correspondences between two point clouds. The correspondences
+%   rely only on geometry, and both matching sets are obtained by setting 
+%   both point clouds as reference.
 %
-%   [rYX] = compare_statistical_features(phiY, phiX, cYX)
+% 
+%   [cXY, cYX] = compute_correspondences(geoX, geoY)
 %
 % 
 %   INPUTS
-%       phiY: Statistical features of point cloud Y
-%       phiX: Statistical features of point cloud X
-%       cYX: Correspondences between Y and X, using X as the reference
+%       geoX: Geometry of point cloud X, with size Kx3
+%       geoY: Geometry of point cloud Y, with size Lx3
 %
 %   OUTPUTS
-%       rYX: Relative difference between statistical features of Y and X
+%       cXY: Correspondences between point clouds X and Y after setting Y 
+%            as the reference, with size Lx1
+%       cYX: Correspondences between point clouds X and Y after setting X 
+%            as the reference, with size Kx1
 
 
-% Comparison of corresponding statistical features between two point clouds
-rYX = nan(size(phiY));
-for i = 1:size(phiY,2)
-    rYX(:,i) = abs(phiX(cYX,i) - phiY(:,i))./(max([abs(phiX(cYX,i)), abs(phiY(:,i))], [], 2) + eps(1));
-end
+% Loop over X and find nearest neighbor in Y (set Y as the reference)
+[cXY, ~] = knnsearch(geoY, geoX);
 
-rYX = real(rYX);
+% Loop over Y and find nearest neighbor in X (set X as the reference)
+[cYX, ~] = knnsearch(geoX, geoY);
