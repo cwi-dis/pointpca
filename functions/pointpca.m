@@ -105,10 +105,8 @@ fprintf('Execution of PointPCA\n');
 
 
 %% Descriptors
-% Max length of reference bounding box 
-maxLenBB = double(max(max(geoA) - min(geoA)));
-% Radius for support region 
-radius = round(cfg.ratio * maxLenBB);
+% Radius for support region using the max dimension of the bounding box
+radius = round(cfg.ratio * get_max_dim_bbox(geoA));
 
 % Computation of geometric and textural descriptors for A
 [dgA] = compute_geometric_descriptors(geoA, radius);
