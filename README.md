@@ -9,7 +9,7 @@ To compute PointPCA:
 
   `[Q] = pointpca(A, B, cfg)`
 
-with `A` and `B` being two point clouds under comparison and `cfg` a custom struct that determines the configuration of the metric. In the output, a table `Q` with quality scores of PointPCA and every statistical feature, is returned. An illustrative example of usage is provided in main.
+where `A` is the original point cloud, `B` the distorted point cloud, and `cfg` a custom struct that determines the configuration of the metric. In the output, a table `Q` with quality scores of PointPCA and every statistical feature, is returned. An illustrative example of usage is provided in main.
 
 For more details, the reader can refer to [1].
 

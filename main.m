@@ -42,10 +42,8 @@ cfg.weights = 'learned';
 
 
 %% Load point clouds
-% Original content
-A = pcread('pointcloudA.ply');
-% Distorted content
-B = pcread('pointcloudB.ply');
+A = pcread('original.ply');
+B = pcread('distorted.ply');
 
 
 %% Compute pointpca
