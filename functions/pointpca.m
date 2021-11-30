@@ -38,8 +38,8 @@ function [Q] = pointpca(A, B, cfg)
 %
 % 
 %   INPUTS
-%       A: Point cloud A as a pointCloud struct
-%       B: Point cloud B as a pointCloud struct
+%       A: Original point cloud A as a pointCloud struct
+%       B: Distorted point cloud B as a pointCloud struct
 %       cfg: Metric configuration as a custom struct with fields:
 %           ratio   - Ratio multiplied by the maximum length of reference 
 %                     bounding box to obtain a radius. The latter is used 
@@ -105,7 +105,8 @@ fprintf('Execution of PointPCA\n');
 
 
 %% Descriptors
-% Radius for support region using the max dimension of the bounding box
+% Radius for support region using the max dimension of the original 
+% content's bounding box
 radius = round(cfg.ratio * get_max_dim_bbox(geoA));
 
 % Computation of geometric and textural descriptors for A
