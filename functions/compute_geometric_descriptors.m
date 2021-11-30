@@ -44,7 +44,7 @@ if r <= 0
 end
 
 % Console output
-fprintf('### Computing geometric descriptors\n');
+fprintf('### \tComputing geometric descriptors\n');
 
 % Initialization
 dgP = nan(size(geoP,1), 15);

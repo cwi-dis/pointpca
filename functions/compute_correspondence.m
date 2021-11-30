@@ -41,7 +41,7 @@ function [cYX] = compute_correspondence(geoX, geoY)
 
 
 % Console output
-fprintf('## Computing correspondence\n');
+fprintf('## \tComputing correspondence\n');
 
 % Loop over Y and find nearest neighbor in X (set X as the reference)
 [cYX, ~] = knnsearch(geoX, geoY);

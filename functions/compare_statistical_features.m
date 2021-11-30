@@ -42,7 +42,7 @@ function [rYX] = compare_statistical_features(phiX, phiY, cYX)
 
 
 % Console output
-fprintf('##### Comparing statistical fearures\n');
+fprintf('##### \tComparing statistical fearures\n');
 
 % Comparison of corresponding statistical features
 rYX = nan(size(phiY));

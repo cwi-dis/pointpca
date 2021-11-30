@@ -43,7 +43,7 @@ function [geoP, colP] = fuse_points(P)
 
 
 % Console output
-fprintf('# Point fusion\n');
+fprintf('# \tPoint fusion\n');
 
 % Unique point coordinates and corresponding indexes
 [geoP, ind_geo] = unique(double(P.Location), 'rows');

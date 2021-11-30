@@ -45,7 +45,7 @@ function [phiP] = compute_statistical_features(geoP, dP, k)
 
     
 % Console output
-fprintf('#### Computing statistical fearures\n');
+fprintf('#### \tComputing statistical fearures\n');
 
 % Support region for computation of statistical features
 [id, ~] = knnsearch(geoP, geoP, 'K', k);

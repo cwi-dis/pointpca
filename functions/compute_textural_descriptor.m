@@ -39,7 +39,7 @@ function [dtP] = compute_textural_descriptor(colP)
 
 
 % Console output
-fprintf('### Computing textural descriptor\n');
+fprintf('### \tComputing textural descriptor\n');
 
 % Conversion to double
 r = double(colP(:,1));
