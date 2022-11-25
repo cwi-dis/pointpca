@@ -1,5 +1,5 @@
 function [Q] = pointpca(A, B, cfg)
-% Copyright (c) 2021 Centrum Wiskunde & Informatica (CWI), The Netherlands
+% Copyright (c) 2022 Centrum Wiskunde & Informatica (CWI), The Netherlands
 %
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -19,19 +19,19 @@ function [Q] = pointpca(A, B, cfg)
 %   Evangelos Alexiou (evangelos.alexiou@cwi.nl)
 %
 % Reference:
-%   E. Alexiou, I. Viola and P. Cesar, "PointPCA: Point Cloud Objective 
-%   Quality Assessment Using PCA-Based Descriptors," submitted to IEEE
-%   Transactions on Multimedia
+%   E. Alexiou, X. Zhou, I. Viola and P. Cesar, "PointPCA: Point Cloud 
+%   Objective  Quality Assessment Using PCA-Based Descriptors," under 
+%   submission 
 %
 %
 % PointPCA is a full-reference point cloud objective quality metric that 
 %   relies on statistical features computed from geometric and textural 
-%   descriptors. The point clouds first pass through point fusion, and 
-%   correspondences are computed based on the fused geometry. Geometric and
-%   textural descriptors are extracted from both point clouds, before 
-%   estimating corresponding statistical features. The latter are compared 
-%   to provide quality predictions. A final quality score is obtained as a 
-%   weighted linear combination of the individual quality predictions.
+%   descriptors. The point clouds first pass through a duplicate point 
+%   merging step, before computing a correspondence function that
+%   identifies matching points between the reference and the point cloud
+%   under evalution. Geometric and textural descriptors are then computed, 
+%   and corresponding statistical features are estimated. The latter are 
+%   finally compared to produce predictors of visual quality.
 % 
 % 
 %   [Q] = pointpca(A, B, cfg)
@@ -46,12 +46,10 @@ function [Q] = pointpca(A, B, cfg)
 %                     in r-search to compute geometric descriptors
 %           knn     - Number of nearest neighbors used in k-nn to compute  
 %                     statistical features
-%           weights - Weights used for a final quality score, with options: 
-%                     {'learned', 'equal'}
 %
 %   OUTPUTS
-%       Q: Table with 33 quality scores of PointPCA (1) and every 
-%          statistical feature (32)
+%       Q: Table with 42 quality predictors corresponding to the proposed
+%           statistical features
 
 
 if nargin < 2
@@ -60,6 +58,10 @@ else
     if ~isa(A, 'pointCloud') || ~isa(B, 'pointCloud')
         error('Two pointCloud structs should be given as input.');
     end
+    if isempty(A.Color) || isempty(B.Color)
+        error('Color data should be given for both point clouds.');
+    end
+    
     if nargin == 2
         cfg.ratio = 0.01;
         cfg.knn = 25;
@@ -94,64 +96,36 @@ end
 fprintf('Execution of PointPCA\n');
 
 
-%% Fusion
-[geoA, colA] = fuse_points(A);
-[geoB, colB] = fuse_points(B);
+%% Sorting and Duplicate merging
+[geoA, colA] = duplicate_merging(A);
+[geoB, colB] = duplicate_merging(B);
 
 
 %% Correspondence
-[cBA] = compute_correspondence(geoA, geoB);
-[cAB] = compute_correspondence(geoB, geoA);
+[cBA] = correspondence(geoA, geoB);
+[cAB] = correspondence(geoB, geoA);
 
 
 %% Descriptors
-% Radius for support region using the max dimension of the original 
-% content's bounding box
 radius = round(cfg.ratio * get_max_dim_bbox(geoA));
-
-% Computation of geometric and textural descriptors for A
-[dgA] = compute_geometric_descriptors(geoA, radius);
-[dtA] = compute_textural_descriptor(colA);
-dA = [dgA, dtA];
-
-% Computation of geometric and textural descriptors for B
-[dgB] = compute_geometric_descriptors(geoB, radius);
-[dtB] = compute_textural_descriptor(colB);
-dB = [dgB, dtB];
+[dA] = descriptors(geoA, colA, radius);
+[dB] = descriptors(geoB, colB, radius);
 
 
 %% Statistical features
-[phiA] = compute_statistical_features(geoA, dA, cfg.knn);
-[phiB] = compute_statistical_features(geoB, dB, cfg.knn);
-
-% Indexes of geometric and textural statistical features
-gtID = 1:size(phiA,2);
-gID = [1:size(dgA,2), size(phiA,2)/2+(1:size(dgA,2))];
-tID = setdiff(gtID, gID);
+[phiA] = statistical_features(geoA, dA, cfg.knn);
+[phiB] = statistical_features(geoB, dB, cfg.knn);
 
 
 %% Comparison
-[rBA] = compare_statistical_features(phiA, phiB, cBA);
-[rAB] = compare_statistical_features(phiB, phiA, cAB);
-
-% Pooling across points
-sAB = nanmean(rAB);
-sBA = nanmean(rBA);
-
-% Symmetric error
-s = max(sAB, sBA);
+[rBA] = comparison(phiA, phiB, cBA);
+[rAB] = comparison(phiB, phiA, cAB);
 
 
-%% Quality score
-if strcmp(cfg.weights, 'learned')
-    mat = load('./mat/weights_learned.mat');
-    w = mat.w;
-    q = sum(w.*s);
-elseif strcmp(cfg.weights, 'equal')
-    qg = mean(s(gID));
-    qt = mean(s(tID));
-    q = 0.5*qg + 0.5*qt;
-end
-    
-Q = array2table([q, s]);
-Q.Properties.VariableNames = ['PointPCA', get_statistical_feature_names];
+%% Predictors
+[s] = predictors(rBA, rAB);
+
+
+%% Output quality scores
+Q = array2table(s);
+Q.Properties.VariableNames = get_predictor_names;

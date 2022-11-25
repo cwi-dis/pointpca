@@ -1,5 +1,5 @@
-function [rYX] = compare_statistical_features(phiX, phiY, cYX)
-% Copyright (c) 2021 Centrum Wiskunde & Informatica (CWI), The Netherlands
+function [rYX] = comparison(phiX, phiY, cYX)
+% Copyright (c) 2022 Centrum Wiskunde & Informatica (CWI), The Netherlands
 %
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -19,30 +19,31 @@ function [rYX] = compare_statistical_features(phiX, phiY, cYX)
 %   Evangelos Alexiou (evangelos.alexiou@cwi.nl)
 %
 % Reference:
-%   E. Alexiou, I. Viola and P. Cesar, "PointPCA: Point Cloud Objective 
-%   Quality Assessment Using PCA-Based Descriptors," submitted to IEEE
-%   Transactions on Multimedia
+%   E. Alexiou, X. Zhou, I. Viola and P. Cesar, "PointPCA: Point Cloud 
+%   Objective  Quality Assessment Using PCA-Based Descriptors," under 
+%   submission 
 %
 %
-% Compare statistical features, given a correspondence function.
+% Comparison of statistical features using the relative difference, given a
+%   correspondence function.
 %   
 %
-%   [rYX] = compare_statistical_features(phiX, phiY, cYX)
+%   [rYX] = comparison(phiX, phiY, cYX)
 %
 % 
 %   INPUTS
-%       phiX: Statistical features of point cloud X, with size KxF
-%       phiY: Statistical features of point cloud Y, with size LxF
+%       phiX: Statistical features of point cloud X, with size Kx42
+%       phiY: Statistical features of point cloud Y, with size Lx42
 %       cYX: Correspondences between point clouds X and Y after setting X 
 %            as the reference, with size Lx1
 %
 %   OUTPUTS
 %       rYX: Relative difference between statistical features, with size 
-%            LxF
+%            Lx42
 
 
 % Console output
-fprintf('##### \tComparing statistical fearures\n');
+fprintf('##### \tComparison\n');
 
 % Comparison of corresponding statistical features
 rYX = nan(size(phiY));

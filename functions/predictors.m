@@ -1,3 +1,4 @@
+function [sP] = predictors(rYX, rXY)
 % Copyright (c) 2022 Centrum Wiskunde & Informatica (CWI), The Netherlands
 %
 %     This program is free software: you can redistribute it and/or modify
@@ -22,34 +23,29 @@
 %   Objective  Quality Assessment Using PCA-Based Descriptors," under 
 %   submission 
 %
+%  
+% Computation of predictors from corresponding statistical features, via 
+%   pooling across error samples, using both point clouds as reference, and
+%   getting the symmetric error. 
+%   
 %
-% This script provides a simple example of a main for the computation of 
-%   PointPCA. The two point clouds under comparison are loaded, and the 
-%   metric is executed using the recommended configurations for the 
-%   estimation of descriptors and statistical features. In the output, a 
-%   table with 42 predictors is returned.
+%   [sP] = predictors(rYX, rXY)
+%
+% 
+%   INPUTS
+%       rYX: Error samples using X as reference, with size Kx42
+%       rXY: Error samples using Y as reference, with size Lx42
+%
+%   OUTPUTS
+%       s: Predictors with size 1x42
 
 
-clear all;
-close all;
-clc;
+% Console output
+fprintf('######\tPredictors\n');
 
+% Pooling across points
+sYX = nanmean(rYX);
+sXY = nanmean(rXY);
 
-%% Configuration
-cfg.ratio = 0.01;  
-cfg.knn = 25;
-
-
-%% Load point clouds
-A = pcread('original.ply');
-B = pcread('distorted.ply');
-
-
-%% Compute pointpca predictors
-[Q] = pointpca(A, B, cfg);
-
-
-%% Include point cloud name and save table
-stimulus = {'distorted.ply'};
-Q = [table(stimulus), Q];
-writetable(Q, 'obj_pointpca_predictors.csv')
+% Symmetric error
+sP = max(sYX, sXY);

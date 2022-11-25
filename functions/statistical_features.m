@@ -1,5 +1,5 @@
-function [phiP] = compute_statistical_features(geoP, dP, k)
-% Copyright (c) 2021 Centrum Wiskunde & Informatica (CWI), The Netherlands
+function [phiP] = statistical_features(geoP, dP, k)
+% Copyright (c) 2022 Centrum Wiskunde & Informatica (CWI), The Netherlands
 %
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -19,33 +19,34 @@ function [phiP] = compute_statistical_features(geoP, dP, k)
 %   Evangelos Alexiou (evangelos.alexiou@cwi.nl)
 %
 % Reference:
-%   E. Alexiou, I. Viola and P. Cesar, "PointPCA: Point Cloud Objective 
-%   Quality Assessment Using PCA-Based Descriptors," submitted to IEEE
-%   Transactions on Multimedia
+%   E. Alexiou, X. Zhou, I. Viola and P. Cesar, "PointPCA: Point Cloud 
+%   Objective  Quality Assessment Using PCA-Based Descriptors," under 
+%   submission
 %
 %   
-% Compute statistical features. The mean and the standard deviation of 
-%   descriptor values are computed using k-nn and based on a selected k.
+% Computation of statistical features. A total of 42 statistical features 
+%   are obtained per point. Statistical features are computed as the mean 
+%   and the standard deviation of descriptor values using k-nn, given a k. 
 %   In the output, the first half of columns correspond to statistical 
-%   features using mean and the second half using standard deviation, with
+%   features using mean and the second half using standard deviation, with 
 %   both following the order of the input descriptors.
 % 
 % 
-%   [phiP] = compute_statistical_features(geoP, dP, k)
+%   [phiP] = statistical_features(geoP, dP, k)
 %
 % 
 %   INPUTS
 %       geoP: Geometry of point cloud P, with size Mx3
-%       dP: Descriptors of point cloud P, with size MxC
+%       dP: Descriptors of point cloud P, with size Mx21
 %       k: Number of nearest neighbors used in k-nn for the computation of
 %          statistical features
 %
 %   OUTPUTS
-%       phiP: Statistical features of point cloud P, with size Mx2C
+%       phiP: Statistical features of point cloud P, with size Mx42
 
     
 % Console output
-fprintf('#### \tComputing statistical fearures\n');
+fprintf('#### \tStatistical fearures\n');
 
 % Support region for computation of statistical features
 [id, ~] = knnsearch(geoP, geoP, 'K', k);

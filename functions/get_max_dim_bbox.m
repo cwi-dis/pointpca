@@ -1,5 +1,5 @@
 function [maxD] = get_max_dim_bbox(geoP)
-% Copyright (c) 2021 Centrum Wiskunde & Informatica (CWI), The Netherlands
+% Copyright (c) 2022 Centrum Wiskunde & Informatica (CWI), The Netherlands
 %
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -19,9 +19,9 @@ function [maxD] = get_max_dim_bbox(geoP)
 %   Evangelos Alexiou (evangelos.alexiou@cwi.nl)
 %
 % Reference:
-%   E. Alexiou, I. Viola and P. Cesar, "PointPCA: Point Cloud Objective 
-%   Quality Assessment Using PCA-Based Descriptors," submitted to IEEE
-%   Transactions on Multimedia
+%   E. Alexiou, X. Zhou, I. Viola and P. Cesar, "PointPCA: Point Cloud 
+%   Objective  Quality Assessment Using PCA-Based Descriptors," under 
+%   submission 
 %
 %
 % Get the maximum dimension of the minimum bounding box.

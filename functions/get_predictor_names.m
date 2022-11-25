@@ -1,3 +1,4 @@
+function [sNames] = get_predictor_names
 % Copyright (c) 2022 Centrum Wiskunde & Informatica (CWI), The Netherlands
 %
 %     This program is free software: you can redistribute it and/or modify
@@ -23,33 +24,17 @@
 %   submission 
 %
 %
-% This script provides a simple example of a main for the computation of 
-%   PointPCA. The two point clouds under comparison are loaded, and the 
-%   metric is executed using the recommended configurations for the 
-%   estimation of descriptors and statistical features. In the output, a 
-%   table with 42 predictors is returned.
+% Get the names of predictors in a readable form.
+%
+% 
+%   [sNames] = get_predictor_names
+%
+% 
+%   OUTPUTS
+%       sNames: Names of predictors in a readable form
 
 
-clear all;
-close all;
-clc;
-
-
-%% Configuration
-cfg.ratio = 0.01;  
-cfg.knn = 25;
-
-
-%% Load point clouds
-A = pcread('original.ply');
-B = pcread('distorted.ply');
-
-
-%% Compute pointpca predictors
-[Q] = pointpca(A, B, cfg);
-
-
-%% Include point cloud name and save table
-stimulus = {'distorted.ply'};
-Q = [table(stimulus), Q];
-writetable(Q, 'obj_pointpca_predictors.csv')
+dgNames = {'g_eigval1', 'g_eigval2', 'g_eigval3', 'g_sum_eigvals', 'g_linearity', 'g_planarity', 'g_sphericity', 'g_anisotropy', 'g_omnivariance', 'g_eigenentropy',  'g_surface_variation', 'g_roughness', 'g_parallelity_x', 'g_parallelity_y', 'g_parallelity_z'};
+dtNames = {'t_luminance', 't_eigval1', 't_eigval2', 't_eigval3', 't_sum_eigvals', 't_eigenentropy'};
+dNames = [dgNames, dtNames];
+sNames = [strcat('mean_', dNames), strcat('std_', dNames)];

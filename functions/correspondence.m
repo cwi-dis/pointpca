@@ -1,5 +1,5 @@
-function [cYX] = compute_correspondence(geoX, geoY)
-% Copyright (c) 2021 Centrum Wiskunde & Informatica (CWI), The Netherlands
+function [cYX] = correspondence(geoX, geoY)
+% Copyright (c) 2022 Centrum Wiskunde & Informatica (CWI), The Netherlands
 %
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -19,16 +19,16 @@ function [cYX] = compute_correspondence(geoX, geoY)
 %   Evangelos Alexiou (evangelos.alexiou@cwi.nl)
 %
 % Reference:
-%   E. Alexiou, I. Viola and P. Cesar, "PointPCA: Point Cloud Objective 
-%   Quality Assessment Using PCA-Based Descriptors," submitted to IEEE
-%   Transactions on Multimedia
+%   E. Alexiou, X. Zhou, I. Viola and P. Cesar, "PointPCA: Point Cloud 
+%   Objective  Quality Assessment Using PCA-Based Descriptors," under 
+%   submission 
 %
 %
-% Compute correspondence between two point clouds, using geometry-only
-%   information and based on nearest neighbors.
+% Computation of correspondence function between two point clouds, using 
+%   geometry-only information and based on nearest neighbors.
 %
 % 
-%   [cYX] = compute_correspondence(geoX, geoY)
+%   [cYX] = correspondence(geoX, geoY)
 %
 % 
 %   INPUTS
@@ -41,7 +41,7 @@ function [cYX] = compute_correspondence(geoX, geoY)
 
 
 % Console output
-fprintf('## \tComputing correspondence\n');
+fprintf('## \tCorrespondence\n');
 
 % Loop over Y and find nearest neighbor in X (set X as the reference)
 [cYX, ~] = knnsearch(geoX, geoY);
