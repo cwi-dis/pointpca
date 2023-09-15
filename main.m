@@ -1,4 +1,4 @@
-% Copyright (c) 2022 Centrum Wiskunde & Informatica (CWI), The Netherlands
+% Copyright (c) 2023 Centrum Wiskunde & Informatica (CWI), The Netherlands
 %
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 %   PointPCA. The two point clouds under comparison are loaded, and the 
 %   metric is executed using the recommended configurations for the 
 %   estimation of descriptors and statistical features. In the output, a 
-%   table with 42 predictors is returned.
+%   table with 46 predictors is returned.
 
 
 clear all;
@@ -36,13 +36,13 @@ clc;
 
 
 %% Configuration
-cfg.ratio = 0.01;  
-cfg.knn = 25;
+cfg.ratio = 0.008;  
+cfg.knn = 9;
 
 
 %% Load point clouds
-A = pcread('original.ply');
-B = pcread('distorted.ply');
+A = pcread('datasets/Dxx/stimuli/original.ply');
+B = pcread('datasets/Dxx/stimuli/distorted_yy.ply');
 
 
 %% Compute pointpca predictors
@@ -50,6 +50,6 @@ B = pcread('distorted.ply');
 
 
 %% Include point cloud name and save table
-stimulus = {'distorted.ply'};
+stimulus = {'distorted_yy.ply'};
 Q = [table(stimulus), Q];
-writetable(Q, 'obj_pointpca_predictors.csv')
+writetable(Q, 'datasets/Dxx/objective scores/obj_pointpca_predictors.csv')

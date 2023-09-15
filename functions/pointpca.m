@@ -1,5 +1,5 @@
 function [Q] = pointpca(A, B, cfg)
-% Copyright (c) 2022 Centrum Wiskunde & Informatica (CWI), The Netherlands
+% Copyright (c) 2023 Centrum Wiskunde & Informatica (CWI), The Netherlands
 %
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ function [Q] = pointpca(A, B, cfg)
 %                     statistical features
 %
 %   OUTPUTS
-%       Q: Table with 42 quality predictors corresponding to the proposed
+%       Q: Table with 46 quality predictors corresponding to the proposed
 %           statistical features
 
 
@@ -63,29 +63,21 @@ else
     end
     
     if nargin == 2
-        cfg.ratio = 0.01;
-        cfg.knn = 25;
-        cfg.weights = 'learned';
+        cfg.ratio = 0.008;
+        cfg.knn = 9;
     else
         if ~isfield(cfg, 'ratio')
-            cfg.ratio = 0.01;
+            cfg.ratio = 0.008;
         else
             if cfg.ratio <= 0 
                 error('The ratio should be a positive real number.');
             end
         end
         if ~isfield(cfg, 'knn')
-            cfg.knn = 25;
+            cfg.knn = 9;
         else
             if cfg.knn <= 0 
                 error('The k should be a positive integer number.');
-            end
-        end
-        if ~isfield(cfg, 'weights')
-            cfg.weights = 'learned';
-        else
-            if ~strcmp(cfg.weights, 'equal') && ~strcmp(cfg.weights, 'learned')
-                error('The selected type of weights is not supported.');
             end
         end
     end

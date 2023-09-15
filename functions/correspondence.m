@@ -1,5 +1,5 @@
 function [cYX] = correspondence(geoX, geoY)
-% Copyright (c) 2022 Centrum Wiskunde & Informatica (CWI), The Netherlands
+% Copyright (c) 2023 Centrum Wiskunde & Informatica (CWI), The Netherlands
 %
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by

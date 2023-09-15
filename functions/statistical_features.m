@@ -1,5 +1,5 @@
 function [phiP] = statistical_features(geoP, dP, k)
-% Copyright (c) 2022 Centrum Wiskunde & Informatica (CWI), The Netherlands
+% Copyright (c) 2023 Centrum Wiskunde & Informatica (CWI), The Netherlands
 %
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ function [phiP] = statistical_features(geoP, dP, k)
 %   submission
 %
 %   
-% Computation of statistical features. A total of 42 statistical features 
+% Computation of statistical features. A total of 46 statistical features 
 %   are obtained per point. Statistical features are computed as the mean 
 %   and the standard deviation of descriptor values using k-nn, given a k. 
 %   In the output, the first half of columns correspond to statistical 
@@ -37,12 +37,12 @@ function [phiP] = statistical_features(geoP, dP, k)
 % 
 %   INPUTS
 %       geoP: Geometry of point cloud P, with size Mx3
-%       dP: Descriptors of point cloud P, with size Mx21
+%       dP: Descriptors of point cloud P, with size Mx23
 %       k: Number of nearest neighbors used in k-nn for the computation of
 %          statistical features
 %
 %   OUTPUTS
-%       phiP: Statistical features of point cloud P, with size Mx42
+%       phiP: Statistical features of point cloud P, with size Mx46
 
     
 % Console output

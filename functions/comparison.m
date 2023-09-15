@@ -1,5 +1,5 @@
 function [rYX] = comparison(phiX, phiY, cYX)
-% Copyright (c) 2022 Centrum Wiskunde & Informatica (CWI), The Netherlands
+% Copyright (c) 2023 Centrum Wiskunde & Informatica (CWI), The Netherlands
 %
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -32,14 +32,14 @@ function [rYX] = comparison(phiX, phiY, cYX)
 %
 % 
 %   INPUTS
-%       phiX: Statistical features of point cloud X, with size Kx42
-%       phiY: Statistical features of point cloud Y, with size Lx42
+%       phiX: Statistical features of point cloud X, with size Kx46
+%       phiY: Statistical features of point cloud Y, with size Lx46
 %       cYX: Correspondences between point clouds X and Y after setting X 
 %            as the reference, with size Lx1
 %
 %   OUTPUTS
 %       rYX: Relative difference between statistical features, with size 
-%            Lx42
+%            Lx46
 
 
 % Console output

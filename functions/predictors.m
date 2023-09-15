@@ -1,5 +1,5 @@
 function [sP] = predictors(rYX, rXY)
-% Copyright (c) 2022 Centrum Wiskunde & Informatica (CWI), The Netherlands
+% Copyright (c) 2023 Centrum Wiskunde & Informatica (CWI), The Netherlands
 %
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -33,11 +33,11 @@ function [sP] = predictors(rYX, rXY)
 %
 % 
 %   INPUTS
-%       rYX: Error samples using X as reference, with size Kx42
-%       rXY: Error samples using Y as reference, with size Lx42
+%       rYX: Error samples using X as reference, with size Kx46
+%       rXY: Error samples using Y as reference, with size Lx46
 %
 %   OUTPUTS
-%       s: Predictors with size 1x42
+%       s: Predictors with size 1x46
 
 
 % Console output
