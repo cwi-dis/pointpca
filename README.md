@@ -25,4 +25,4 @@ If you wish to use any of the provided material in your research, we kindly ask 
 
 ### References
 
-[1] E. Alexiou, X. Zhou, I. Viola and P. Cesar, "[PointPCA: Point Cloud Objective Quality Assessment Using PCA-Based Descriptors](https://arxiv.org/abs/2111.12663)," *under submission*
+[1] E. Alexiou, X. Zhou, I. Viola, and P. Cesar, “PointPCA: point cloud objective quality assessment using PCA-based descriptors.” In *EURASIP Journal of Image and Video Processing*, 2024.
